@@ -3,7 +3,7 @@ from bson.json_util import dumps
 from flask import Flask, request
 from pymongo import MongoClient
 
-from PaginationHelpers import get_pagination_parameters_from_http_context
+from PaginationHelpers import get_pagination_parameters_from_http_context, remove_pagination_parameters_from_dictionary
 
 app = Flask(__name__)
 
@@ -27,6 +27,8 @@ def get_users():
     page, page_size = get_pagination_parameters_from_http_context(request)
 
     query = {k: int(v) if isinstance(v, str) and v.isdigit() else v for k, v in request.args.items()}
+
+    remove_pagination_parameters_from_dictionary(query)
 
     users = collection \
         .find(query, {'First Name': 1, 'last_name': 1}) \

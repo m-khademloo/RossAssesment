@@ -15,3 +15,8 @@ def get_pagination_parameters_from_http_context(request):
 
     page, page_size = normalize_pagination_parameters(page, page_size);
     return page, page_size
+
+
+def remove_pagination_parameters_from_dictionary(query_parameter_dictionary):
+    query_parameter_dictionary.pop("page", None)
+    query_parameter_dictionary.pop("page_size", None)
