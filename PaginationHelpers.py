@@ -1,10 +1,11 @@
 PAGE_SIZE_DEFAULT = 30
+PAGE_SIZE_MAX = 100
 
 
 def normalize_pagination_parameters(page, page_size):
-    if page is None or int(page) > 30 or int(page) <= 0:
+    if page is None or int(page) <= 0:
         page = 1  # default value
-    if page_size is None or int(page_size) > 30 or int(page_size) <= 0:
+    if page_size is None or int(page_size) > PAGE_SIZE_MAX or int(page_size) <= 0:
         page_size = PAGE_SIZE_DEFAULT
     return int(page), int(page_size)
 
