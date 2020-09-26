@@ -1,7 +1,9 @@
 from bson import ObjectId
 from bson.json_util import dumps
-from flask import Flask
+from flask import Flask, request
 from pymongo import MongoClient
+
+from PaginationHelpers import get_pagination_parameters_from_http_context
 
 app = Flask(__name__)
 
@@ -22,8 +24,12 @@ def get_api_info():
 
 @app.route('/api/v1/users', methods=['GET'])
 def get_users():
-    if collection.find().count() > 0:
-        return dumps(collection.find())
+    page, page_size = get_pagination_parameters_from_http_context(request)
+
+    users = collection.find().skip((page - 1) * page_size).limit(page_size)
+
+    if users.count() > 0:
+        return dumps(users)
     else:
         return "", 204
 
