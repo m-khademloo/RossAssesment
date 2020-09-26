@@ -26,7 +26,10 @@ def get_api_info():
 def get_users():
     page, page_size = get_pagination_parameters_from_http_context(request)
 
-    users = collection.find().skip((page - 1) * page_size).limit(page_size)
+    users = collection \
+        .find({}, {'First Name': 1, 'last_name': 1}) \
+        .skip((page - 1) * page_size) \
+        .limit(page_size)
 
     if users.count() > 0:
         return dumps(users)
